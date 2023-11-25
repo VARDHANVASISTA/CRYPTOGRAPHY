@@ -1,8 +1,5 @@
-#Yet to complete sequential encryption:
-def encryption():
+def encryption(msg, shift):
     encm = ""
-    msg = input("Enter the original message:\n")
-    shift = int(input("Enter the key:\n"))
     for i in range(len(msg)):
         pc = msg[i]
         pos = 0
@@ -28,12 +25,12 @@ def encryption():
             encm += spch[pos]
         else:
             encm += pc
-    print(f"Encrypted message is...\n{encm}")
+    clear()
+    print(f"Encrypted message is >> {encm}")
+    return encm
 
-def decryption():
+def decryption(msg, shift):
     orm = ""
-    msg = input("Enter the encrypted message:\n")
-    shift = int(input("Enter the key:\n"))
     for i in range(len(msg)):
         pc = msg[i]
         pos = 0
@@ -67,39 +64,151 @@ def decryption():
             orm += spch[pos]
         else:
             orm += pc
-    print(f"Decrypted message is...\n{orm}")
+    clear()
+    print(f"Decrypted message is >> {orm}")
+    return orm
 
-logo = """           
- ,adPPYba, ,adPPYYba,  ,adPPYba, ,adPPYba, ,adPPYYba, 8b,dPPYba,  
-a8"     "" ""     `Y8 a8P_____88 I8[    "" ""     `Y8 88P'   "Y8  
-8b         ,adPPPPP88 8PP"""""""  `"Y8ba,  ,adPPPPP88 88          
-"8a,   ,aa 88,    ,88 "8b,   ,aa aa    ]8I 88,    ,88 88          
- `"Ybbd8"' `"8bbdP"Y8  `"Ybbd8"' `"YbbdP"' `"8bbdP"Y8 88 
- 
-           88             88                                 
-           ""             88                                 
-                          88                                 
- ,adPPYba, 88 8b,dPPYba,  88,dPPYba,   ,adPPYba, 8b,dPPYba,  
-a8"     "" 88 88P'    "8a 88P'    "8a a8P_____88 88P'   "Y8  
-8b         88 88       d8 88       88 8PP""""""" 88          
-"8a,   ,aa 88 88b,   ,a8" 88       88 "8b,   ,aa 88          
- `"Ybbd8"' 88 88`YbbdP"'  88       88  `"Ybbd8"' 88          
-              88                                             
-              88           
+
+logo = """ 
+
+                                      ######     ###    ########  ######     ###    ########  
+                                     ##    ##   ## ##   ##       ##    ##   ## ##   ##     ## 
+                                     ##        ##   ##  ##       ##        ##   ##  ##     ## 
+                                     ##       ##     ## ######    ######  ##     ## ########  
+                                     ##       ######### ##             ## ######### ##   ##   
+                                     ##    ## ##     ## ##       ##    ## ##     ## ##    ##  
+                                      ######  ##     ## ########  ######  ##     ## ##     ## 
+
+
+                                      ######  #### ########  ##     ## ######## ########      
+                                     ##    ##  ##  ##     ## ##     ## ##       ##     ##     
+                                     ##        ##  ##     ## ##     ## ##       ##     ##     
+                                     ##        ##  ########  ######### ######   ########      
+                                     ##        ##  ##        ##     ## ##       ##   ##       
+                                     ##    ##  ##  ##        ##     ## ##       ##    ##      
+                                      ######  #### ##        ##     ## ######## ##     ##     
+
 """
 
-sm = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+from replit import clear
+import string
+sm = list(string.ascii_lowercase)
 spch = ['!','@','#','$','^','&','*','(',')','_','','+','=','[',']','{','}','|',':',';',',','/','?','<','>','₹','%','"']
-cap = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+cap = list(string.ascii_uppercase)
 num = ['1','2','3','4','5','6','7','8','9','0']
-print(logo)
-run = True
-while run:
-    ch = input("Choices are...\n 1. Encrypt\n 2. Decrypt\n Enter any other key to exit\nEnter your choice:\n")
+print(logo)#ASCII ART FROM : patorjk.com  STYLE : BANNER3
+con = True
+while con:
+    ch = input("Choices are:\n 1. Encryption\n 2. Decryption\n Enter any other key to quit\nEnter your choice >> ")
     if ch == '1':
-        encryption()
+        pt = input("Enter the original message >> ")
+        a = int(input("Enter the shift key >> "))
+        ct = encryption(pt, a)
+        con1 = True
+        while con1:
+            op = input(f"Do you want to continue with '{ct}' as Cipher text and decrypt it?\nType 'Y' for yes or\nType 'N' for giving other Cipher text to decrypt or\nType 'S' for encrypting '{ct}'\nType 'C' for giving another Plain text to encrypt\nType any other key to quit\nEnter your choice >> ").upper()
+            if op == 'Y':
+                in1 = input(f"Do yo want to continue with the same key ({a})?\nType 'Y' for yes or\nType 'N' for giving different keys\nType any other key to quit\nEnter your choice >>  ").upper()
+                if in1 == 'Y':
+                    pt = decryption(ct, a)
+                elif in1 == 'N':
+                    a = int(input("Enter the shift key >> "))
+                    pt = decryption(ct, a)
+                else:
+                    clear()
+                    print("Thank you....")
+                    con1 = False
+                    con = False
+            elif op == 'N':
+                ct = input("Enter the encrypted message >> ")
+                a = int(input("Enter the shift key >> "))
+                pt = decryption(ct, a)
+            elif op == 'S':
+                pt = ct
+                in2 = input(f"Do yo want to continue with the same keys ({a})?\nType 'Y' for yes or\nType 'N' for giving different keys\nType any other key to quit\nEnter your choice >>  ").upper()
+                if in2 == 'Y':
+                    ct = encryption(pt, a)
+                elif in2 == 'N':
+                    a = int(input("Enter the shift key >> "))
+                    ct = encryption(pt, a)
+                else:
+                    clear()
+                    print("Thank you....")
+                    con1 = False
+                    con = False
+            elif op == 'C':
+                pt = input("Enter the original message >> ")
+                in3 = input(f"Do yo want to continue with the same keys ({a})?\nType 'Y' for yes or\nType 'N' for giving different keys\nType any other key to quit\nEnter your choice >>  ").upper()
+                if in3 == 'Y':
+                    ct = encryption(pt, a)
+                elif in3 == 'N': 
+                    a = int(input("Enter the shift key >> "))
+                    ct = encryption(pt, a)
+                else:
+                    clear()
+                    print("Thank you....")
+                    con1 = False
+                    con = False
+            else:
+                clear()
+                print("Thank you...")
+                con = False
+                con1 = False
     elif ch == '2':
-        decryption()
+        ct = input("Enter the encrypted message >> ")
+        a = int(input("Enter the shift key >> "))
+        pt = encryption(ct, a)
+        con1 = True
+        while con1:
+            op = input(f"Do you want to continue with '{pt}' as Plain text and encrypt it?\nType 'Y' for yes or\nType 'N' for giving other Plain text to encrypt or\nType 'S' for decrypting '{pt}'\nType 'C' for giving another Cipher text to decrypt\nType any other key to quit\nEnter your choice >> ").upper()
+            if op == 'Y':
+                in1 = input(f"Do yo want to continue with the same keys ({a})?\nType 'Y' for yes or\nType 'N' for giving different keys\nType any other key to quit\nEnter your choice >>  ").upper()
+                if in1 == 'Y':
+                    ct = encryption(pt, a)
+                elif in1 == 'N':
+                    a = int(input("Enter the shift key >> "))
+                    ct = encryption(pt, a)
+                else:
+                    clear()
+                    print("Thank you....")
+                    con1 = False
+                    con = False
+            elif op == 'N':
+                pt = input("Enter the decrypted message >> ")
+                a = int(input("Enter the shift key >> "))
+                ct = encryption(pt, a)
+            elif op == 'S':
+                ct = pt
+                in2 = input(f"Do yo want to continue with the same keys ({a})?\nType 'Y' for yes or\nType 'N' for giving different keys\nType any other key to quit\nEnter your choice >>  ").upper()
+                if in2 == 'Y':
+                    pt = decryption(ct, a)
+                elif in2 == 'N':
+                    a = int(input("Enter the shift key >> "))
+                    pt = decryption(ct, a)
+                else:
+                    clear()
+                    print("Thank you....")
+                    con1 = False
+                    con = False
+            elif op == 'C':
+                ct = input("Enter the encrypted message >> ")
+                in3 = input(f"Do yo want to continue with the same keys ({a})?\nType 'Y' for yes or\nType 'N' for giving different keys\nType any other key to quit\nEnter your choice >>  ").upper()
+                if in3 == 'Y':
+                    pt = decryption(ct, a)
+                elif in3 == 'N': 
+                    a = int(input("Enter the shift key >> "))
+                    pt = decryption(ct, a)
+                else:
+                    clear()
+                    print("Thank you....")
+                    con1 = False
+                    con = False
+            else:
+                clear()
+                print("Thank you...")
+                con = False
+                con1 = False
     else:
-        run = False
+        clear()
         print("Thank you...")
+        con = False
